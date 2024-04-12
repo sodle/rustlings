@@ -27,8 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
-
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
 // integers, an array of three integers, and a slice of integers.
@@ -41,6 +39,20 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let (red, green, blue) = tuple;
+        let red = match red {
+            0..=255 => red as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        let green = match green {
+            0..=255 => green as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        let blue = match blue {
+            0..=255 => blue as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        Ok(Color {red, green, blue})
     }
 }
 
@@ -48,6 +60,20 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let [red, green, blue] = arr;
+        let red = match red {
+            0..=255 => red as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        let green = match green {
+            0..=255 => green as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        let blue = match blue {
+            0..=255 => blue as u8,
+            _ => return Err(IntoColorError::IntConversion)
+        };
+        Ok(Color {red, green, blue})
     }
 }
 
@@ -55,6 +81,24 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        match slice.len() {
+            3 => {
+                let red = match slice[0] {
+                    0..=255 => slice[0] as u8,
+                    _ => return Err(IntoColorError::IntConversion)
+                };
+                let green = match slice[1] {
+                    0..=255 => slice[1] as u8,
+                    _ => return Err(IntoColorError::IntConversion)
+                };
+                let blue = match slice[2] {
+                    0..=255 => slice[2] as u8,
+                    _ => return Err(IntoColorError::IntConversion)
+                };
+                Ok(Color {red, green, blue})
+            },
+            _ => Err(IntoColorError::BadLen)
+        }
     }
 }
 
